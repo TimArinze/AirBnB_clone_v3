@@ -82,3 +82,12 @@ class DBStorage:
             if obj.id == id:
                 return obj
         return None
+
+    def count(self, cls=None):
+        """the counter"""
+        length = 0
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                length += len(self.__session.query(classes[clss]).all())
+        return length
+
