@@ -71,6 +71,8 @@ class FileStorage:
 
     def get(self, cls, id):
         """to retrieve one object"""
+        if cls not in classes.values():
+            return None
         key = "{}.{}".format(cls, id)
         if key in self.__objects.keys():
             return self.__objects[key]
