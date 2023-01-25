@@ -4,7 +4,7 @@ State objects
 """
 from api.v1.views import app_views
 import json
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, abort
 from models import storage
 from models.base_model import BaseModel
 from models.state import State
@@ -21,13 +21,10 @@ def all_states():
 @app_views.route('/states/<state_id>', strict_slashes=False)
 def state_object(state_id):
     """retrieve state using id"""
-    new_list = []
-    response = storage.all(State)
-    for obj in response.values():
-        dictionary = obj.to_dict()
-        if dictionary["id"] == state_id:
-            new_list.append(dictionary)
-    return jsonify(new_list)
+    state = storage.get(State, state_id)
+    if not state:
+        abort(404)
+    return jsonify(state)
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'],
