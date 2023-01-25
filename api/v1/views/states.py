@@ -4,12 +4,13 @@ State objects
 """
 from api.v1.views import app_views
 import json
-from flask import jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request
 from models import storage
 from models.base_model import BaseModel
 from models.state import State
 
 
+@app_views.route('/states/')
 @app_views.route('/states')
 def all_states():
     """retrieves all states"""
@@ -17,7 +18,7 @@ def all_states():
     return jsonify([obj.to_dict() for obj in response.values()])
 
 
-@app_views.route('/states/<state_id>')
+@app_views.route('/states/<state_id>', strict_slashes=False)
 def state_object(state_id):
     """retrieve state using id"""
     new_list = []
@@ -29,7 +30,7 @@ def state_object(state_id):
     return jsonify(new_list)
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     """Deletes States Object"""
     state = storage.get(State, state_id)
@@ -41,13 +42,32 @@ def delete_state(state_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/states', methods=['POST'])
-def create_state():
-    try:
-        data = request.get_json()
-    except:
-        return make_response("Not a JSON", 400)
+@app_views.route('/states', methods=["POST"], strict_slashes=False)
+def post_states():
+    """create state object"""
+    data = request.get_json()
+    if not data:
+        abort(400, "Not a JSON")
     if "name" not in data:
-        return make_response("Missing name", 400)
-    new_state = {"name": data["name"]}
-    return make_response(jsonify(new_state), 201)
+        abort(400, "Missing name")
+    new_state = State(**data)
+    storage.new(new_state)
+    storage.save()
+    return jsonify(new_state.to_dict()), 201
+
+
+@app_views.route("/states/<state_id>", methods=['PUT'], strict_slashes=False)
+def put_state(state_id):
+    """put state object"""
+    data = request.get_json()
+    if not data:
+        abort(400, "Not a JSON")
+    state = storage.get(State, state_id)
+    if not state:
+        abort(404)
+    attributes = ['id', 'created_at', 'updated_at']
+    for key, value in data.items():
+        if key not in attributes:
+            setattr(state, key, value)
+    storage.save()
+    return make_response(jsonify(state.to_dict()), 200)
