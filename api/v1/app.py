@@ -5,11 +5,11 @@ Instance of flask
 from flask import Flask, Blueprint, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
-import os
+from os import getenv
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
-app.config['JSONIFY_PRETTY_REGULAR'] = True
+
 
 @app.teardown_appcontext
 def teardown(exception):
@@ -24,6 +24,6 @@ def not_found(error):
 
 
 if __name__ == "__main__":
-    host = os.environ.get('HBNB_API_HOST') or '0.0.0.0'
-    port = os.environ.get('HBNB_API_PORT') or 5000
+    host = getenv('HBNB_API_HOST') or '0.0.0.0'
+    port = getenv('HBNB_API_PORT') or 5000
     app.run(host=host, port=port, threaded=True)

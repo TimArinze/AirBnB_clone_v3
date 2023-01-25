@@ -4,7 +4,7 @@ State objects
 """
 from api.v1.views import app_views
 import json
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 from models import storage
 from models.base_model import BaseModel
 from models.state import State
@@ -39,3 +39,15 @@ def delete_state(state_id):
     del state
     storage.save()
     return make_response(jsonify({}), 200)
+
+
+@app_views.route('/states', methods=['POST'])
+def create_state():
+    try:
+        data = request.get_json()
+    except:
+        return make_response("Not a JSON", 400)
+    if "name" not in data:
+        return make_response("Missing name", 400)
+    new_state = {"name": data["name"]}
+    return make_response(jsonify(new_state), 201)
