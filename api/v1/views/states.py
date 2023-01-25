@@ -30,7 +30,8 @@ def state_object(state_id):
     return jsonify(new_list)
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_state(state_id):
     """Deletes States Object"""
     state = storage.get(State, state_id)
