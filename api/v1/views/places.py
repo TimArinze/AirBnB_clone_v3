@@ -50,8 +50,10 @@ def post_place(city_id):
     response = request.get_json()
     if not response:
         abort(400, "Not a JSON")
-    if not "user_id":
+    if 'user_id' not in response:
         abort(400, "Missing user_id")
+    if "name" not in response:
+        abort(400, "Missing name")
     city = storage.get(City, city_id)
     if not city:
         abort(404)
