@@ -79,10 +79,10 @@ def update_review(review_id):
     if not response:
         abort(400, "Not a JSON")
 
+    attributes = ["id", "user_id", "created_at", "updated_at", "place_id"]
     for key, value in response.items():
-        if key not in ["id", "user_id", "created_at", "updated_at",
-                       "place_id"]:
+        if key not in attributes:
             setattr(review, key, value)
 
     storage.save()
-    return make_response(jsonify(place.to_dict()), 200)
+    return make_response(jsonify(review.to_dict()), 200)
