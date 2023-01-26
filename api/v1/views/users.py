@@ -56,15 +56,17 @@ def post_user():
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def update_user(user_id):
     """update a users info"""
-    user = storage.get(User, user_id)
+    user = storage.get("User", user_id)
     if not user:
         abort(404)
 
     response = request.get_json()
     if not response:
         abort(400, "Not a JSON")
+
     for key, value in response.items():
         if key not in ["id", "email", "created_at", "updated_at"]:
             setattr(user, key, value)
+
     storage.save()
-    return jsonify(user.to_dict(), 200)
+    return jsonify(user.to_dict()), 200
