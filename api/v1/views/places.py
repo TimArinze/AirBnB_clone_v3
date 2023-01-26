@@ -14,7 +14,7 @@ import hashlib
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
-def all_places():
+def all_places(city_id):
     """Retrieve all places linked to a city_id"""
     city = storage.get(City, city_id)
     if not city:
@@ -45,7 +45,7 @@ def delete_place(place_id):
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
-def post_place():
+def post_place(city_id):
     """new place"""
     response = request.get_json()
     if not response:
