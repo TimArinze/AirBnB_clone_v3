@@ -2,7 +2,7 @@
 """
 Restful USer
 """
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, abort, request, make_response
 from models.user import User
 import json
 from api.v1.views import app_views
@@ -56,7 +56,7 @@ def post_user():
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def update_user(user_id):
     """update a users info"""
-    user = storage.get("User", user_id)
+    user = storage.get(User, user_id)
     if not user:
         abort(404)
 
@@ -69,4 +69,4 @@ def update_user(user_id):
             setattr(user, key, value)
 
     storage.save()
-    return jsonify(user.to_dict()), 200
+    return make_response(jsonify(user.to_dict()), 200)
