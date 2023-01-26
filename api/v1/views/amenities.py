@@ -13,7 +13,7 @@ from models.amenity import Amenity
 def all_amenities():
     """get all amenities"""
     all_amenities = storage.all(Amenity)
-    return jsonify(all_amenities)
+    return jsonify([amenity.to_dict() for amenity in all_amenities.values()])
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
@@ -26,7 +26,7 @@ def get_amenity(amenity_id):
     return jsonify(amenity.to_dict())
 
 
-@app_views.route('/ameniteies/<amenity_id>', methods=['DELETE'],
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_amenity(amenity_id):
     """delete a particular amenity"""
