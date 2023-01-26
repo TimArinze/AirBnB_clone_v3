@@ -4,6 +4,8 @@ Restful Place
 """
 from flask import Flask, jsonify, abort, request, make_response
 from models.place import Place
+from models.city import City
+from models.user import User
 import json
 from api.v1.views import app_views
 from models import storage
