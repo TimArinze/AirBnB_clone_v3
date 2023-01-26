@@ -2,7 +2,7 @@
 """
 Restful USer
 """
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, request
 from models.user import User
 import json
 from api.v1.views import app_views
@@ -63,7 +63,7 @@ def update_user(user_id):
         abort(400, "Not a JSON")
     attributes = ["id", "email", "created_at", "updated_at"]
     for key, value in response.items():
-        if key not in attributes.values():
+        if key not in attributes:
             setattr(user, key, value)
     storage.save()
     return jsonify(user.to_dict(), 200)
