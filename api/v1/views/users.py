@@ -65,5 +65,5 @@ def update_user(user_id):
     for key, value in response.items():
         if key not in attributes:
             setattr(user, key, value)
-    storage.save()
+            storage.save()
     return jsonify(user.to_dict(), 200)
