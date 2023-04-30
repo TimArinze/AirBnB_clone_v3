@@ -10,8 +10,8 @@ from models.base_model import BaseModel
 from models.state import State
 
 
-@app_views.route('/states/')
-@app_views.route('/states')
+@app_views.route('/states/', strict_slashes=False)
+@app_views.route('/states', strict_slashes=False)
 def all_states():
     """retrieves all states"""
     response = storage.all(State)

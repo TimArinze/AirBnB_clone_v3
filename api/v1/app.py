@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Instance of flask
+Flask Application: Instance of flask
 """
 from flask import Flask, Blueprint, jsonify, make_response
 from models import storage
