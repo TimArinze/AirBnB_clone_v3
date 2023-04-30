@@ -18,7 +18,7 @@ def all_users():
 
 
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
-def a_user(user_id):
+def single_user(user_id):
     """Retrieve one user"""
     user = storage.get(User, user_id)
     if not user:
