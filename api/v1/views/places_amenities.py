@@ -34,7 +34,7 @@ def delete_review(place_id, amenity_id):
         abort(404)
     if place.id != amenity.place_id:
         abort(404)
-    storage.delete(amenity)
+        storage.delete(amenity)        
     storage.save()
     return jsonify({}), 200
 
