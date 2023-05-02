@@ -31,4 +31,4 @@ class User(BaseModel, Base):
         if name == "password":
             encoded = value.encode()
             hashed = hashlib.md5(encoded).hexdigest()
-        super().__setattr__(name, hashed)
+            super().__setattr__(name, hashed)
