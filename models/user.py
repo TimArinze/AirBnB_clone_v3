@@ -28,7 +28,8 @@ class User(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
     def __setattr__(self, name, value):
+        """md5 encryption"""
         if name == "password":
             encoded = value.encode()
-            hashed = hashlib.md5(encoded).hexdigest()
-            super().__setattr__(name, hashed)
+            value = hashlib.md5(encoded).hexdigest()
+        super().__setattr__(name, value)
